@@ -11,6 +11,6 @@ class MovieService(BaseService):
             raise ItemNotFound
         return MovieSchema().dump(movie)
 
-    def get_all_genres(self):
+    def get_all_movies(self):
         movies = MovieDAO(self._db_session).get_all()
         return MovieSchema(many=True).dump(movies)

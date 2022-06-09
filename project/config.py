@@ -31,5 +31,5 @@ class DevelopmentConfig(BaseConfig):
     ENV = 'development'
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
-        os.path.dirname(BASEDIR), "project.db"
+        os.path.dirname(BASEDIR), "database/project.db"
     )

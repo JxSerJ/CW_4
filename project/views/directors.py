@@ -1,8 +1,7 @@
 from flask_restx import abort, Namespace, Resource
 
 from project.exceptions import ItemNotFound
-from project.services import DirectorsService
-from project.setup_db import db
+from project.container import director_service
 
 directors_ns = Namespace("directors")
 
@@ -12,7 +11,7 @@ class DirectorsView(Resource):
     @directors_ns.response(200, "OK")
     def get(self):
         """Get all directors"""
-        return DirectorsService(db.session).get_all_directors()
+        return director_service.get_all_directors()
 
 
 @directors_ns.route("/<int:director_id>")
@@ -22,6 +21,6 @@ class DirectorView(Resource):
     def get(self, director_id: int):
         """Get director by id"""
         try:
-            return DirectorsService(db.session).get_item_by_id(director_id)
+            return director_service.get_item_by_id(director_id)
         except ItemNotFound:
             abort(404, message="Director not found")

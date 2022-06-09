@@ -1,8 +1,8 @@
+from flask import request
 from flask_restx import abort, Namespace, Resource
 
 from project.exceptions import ItemNotFound
-from project.services import MoviesService
-from project.setup_db import db
+from project.container import movie_service
 
 movies_ns = Namespace("movies")
 
@@ -12,7 +12,9 @@ class MoviesView(Resource):
     @movies_ns.response(200, "OK")
     def get(self):
         """Get all movies"""
-        return MoviesService(db.session).get_all_movies()
+        page = request.args.get("page", type=int)
+        status = request.args.get("status")
+        return movie_service.get_all_movies()
 
 
 @movies_ns.route("/<int:movie_id>")
@@ -22,6 +24,6 @@ class MovieView(Resource):
     def get(self, movie_id: int):
         """Get movie by id"""
         try:
-            return MoviesService(db.session).get_item_by_id(movie_id)
+            return movie_service.get_item_by_id(movie_id)
         except ItemNotFound:
             abort(404, message="Movie not found")

@@ -1,16 +1,18 @@
-from project.dao import GenreDAO
 from project.exceptions import ItemNotFound
-from project.schemas.genre import GenreSchema
+from project.schemas import GenreSchema
 from project.services.base import BaseService
+
+genre_schema = GenreSchema()
+genres_schema = GenreSchema(many=True)
 
 
 class GenresService(BaseService):
     def get_item_by_id(self, pk):
-        genre = GenreDAO(self._db_session).get_by_id(pk)
+        genre = self.dao.get_by_id(pk)
         if not genre:
             raise ItemNotFound
-        return GenreSchema().dump(genre)
+        return genre_schema.dump(genre)
 
     def get_all_genres(self):
-        genres = GenreDAO(self._db_session).get_all()
-        return GenreSchema(many=True).dump(genres)
+        genres = self.dao.get_all()
+        return genres_schema.dump(genres)

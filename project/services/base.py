@@ -1,6 +1,6 @@
-from sqlalchemy.orm.scoping import scoped_session
+from project.dao import GenreDAO, DirectorDAO, MovieDAO
 
 
 class BaseService:
-    def __init__(self, session: scoped_session):
-        self._db_session = session
+    def __init__(self, dao: [GenreDAO, DirectorDAO, MovieDAO]):
+        self.dao = dao

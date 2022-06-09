@@ -4,7 +4,7 @@ from project.schemas.director import DirectorSchema
 from project.services.base import BaseService
 
 
-class DirectorService(BaseService):
+class DirectorsService(BaseService):
     def get_item_by_id(self, pk):
         director = DirectorDAO(self._db_session).get_by_id(pk)
         if not director:

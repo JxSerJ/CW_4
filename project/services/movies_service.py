@@ -13,6 +13,6 @@ class MoviesService(BaseService):
             raise ItemNotFound
         return movie_schema.dump(movie)
 
-    def get_all_movies(self):
-        movies = self.dao.get_all()
+    def get_all_movies(self, page: int = None, status:str = None):
+        movies = self.dao.get_all(page, status)
         return movies_schema.dump(movies)

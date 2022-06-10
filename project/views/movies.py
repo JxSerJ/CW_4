@@ -14,7 +14,7 @@ class MoviesView(Resource):
         """Get all movies"""
         page = request.args.get("page", type=int)
         status = request.args.get("status")
-        return movie_service.get_all_movies()
+        return movie_service.get_all_movies(page, status)
 
 
 @movies_ns.route("/<int:movie_id>")

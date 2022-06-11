@@ -12,3 +12,7 @@ class UserNotFound(BaseError):
 
 class WrongPassword(BaseError):
     pass
+
+
+class InvalidTokens(BaseError):
+    pass

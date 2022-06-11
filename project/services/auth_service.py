@@ -5,6 +5,7 @@ import calendar
 from datetime import datetime, timedelta
 
 from flask import current_app
+from jwt import DecodeError
 
 from project.dao import AuthDAO
 from project.dao.models import User
@@ -12,7 +13,7 @@ from project.services.base import BaseService
 from project.schemas.auth import AuthUserSchema
 
 from project.tools.security import generate_password_digest, generate_password_b64
-from project.exceptions import UserNotFound, WrongPassword
+from project.exceptions import UserNotFound, WrongPassword, InvalidTokens
 
 user_created_schema = AuthUserSchema()
 
@@ -73,4 +74,22 @@ class AuthService(BaseService[AuthDAO]):
         if not self.__compare_password_digest(password1=password_hash, password2=user.password_hash):
             raise WrongPassword
 
+        return self.__generate_tokens(user)
+
+    def approve_tokens(self, tokens: dict[str, str]):
+        try:
+            access_token_data = jwt.decode(
+                jwt=tokens['access_token'],
+                key=current_app.config['SECRET_KEY'],
+                algorithms=current_app.config['JWT_ALGO']
+            )
+            refresh_token_data = jwt.decode(
+                jwt=tokens['refresh_token'],
+                key=current_app.config['SECRET_KEY'],
+                algorithms=current_app.config['JWT_ALGO']
+            )
+        except DecodeError:
+            raise InvalidTokens
+
+        user = self.dao.get_user_by_email(email=refresh_token_data['email'])
         return self.__generate_tokens(user)

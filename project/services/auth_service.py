@@ -92,4 +92,20 @@ class AuthService(BaseService[AuthDAO]):
             raise InvalidTokens
 
         user = self.dao.get_user_by_email(email=refresh_token_data['email'])
+        if user is None:
+            raise UserNotFound
         return self.__generate_tokens(user)
+
+    def update_password(self, email, password1, password2):
+        user = self.dao.get_user_by_email(email=email)
+        if user is None:
+            raise UserNotFound
+
+        old_password_hash = self.__get_hash(password1)
+
+        if not self.__compare_password_digest(password1=old_password_hash, password2=user.password_hash):
+            raise WrongPassword
+
+        new_password_hash = self.__get_hash(password2)
+
+        self.dao.update_user_password(email=email, new_password_hash=new_password_hash)

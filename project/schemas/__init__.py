@@ -7,5 +7,5 @@ __all__ = [
     "GenreSchema",
     "DirectorSchema",
     "MovieSchema",
-    "UserSchema"
+    "UserSchema",
 ]

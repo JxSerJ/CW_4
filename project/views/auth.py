@@ -1,5 +1,6 @@
-from flask import request
+from flask import request, redirect, url_for
 from flask_restx import Namespace, Resource
+from jwt import ExpiredSignatureError
 
 from project.container import auth_service
 from project.exceptions import IncorrectPassword, UserNotFound, InvalidTokens
@@ -46,3 +47,5 @@ class AuthLoginView(Resource):
             return auth_service.approve_tokens(input_data), 201
         except InvalidTokens:
             return '', 401
+        except ExpiredSignatureError:
+            return redirect('/')

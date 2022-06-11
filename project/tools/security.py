@@ -11,7 +11,7 @@ def generate_password_digest(password) -> bytes:
     return hashlib.pbkdf2_hmac(
         hash_name=current_app.config["PWD_HASH_ALGO"],
         password=password.encode("utf-8"),
-        salt=current_app.config["PWD_HASH_SALT"],
+        salt=current_app.config["PWD_HASH_SALT"].encode("utf-8"),
         iterations=current_app.config["PWD_HASH_ITERATIONS"]
     )
 

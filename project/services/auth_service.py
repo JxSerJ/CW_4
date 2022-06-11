@@ -56,6 +56,8 @@ class AuthService(BaseService[AuthDAO]):
             "refresh_token": refresh_token
         }
 
+        self.dao.write_tokens(data, tokens)
+
         return tokens
 
     def register(self, password: str, email: str) -> AuthUserSchema:

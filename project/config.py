@@ -18,7 +18,7 @@ class BaseConfig:
 
     JWT_ALGO = 'HS512'
     PWD_HASH_ALGO = 'sha512'
-    PWD_HASH_SALT = "salt".encode('utf-8')
+    PWD_HASH_SALT = "salt"
     PWD_HASH_ITERATIONS = 500_000
 
 
@@ -31,6 +31,6 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     ENV = 'development'
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
-        os.path.dirname(BASEDIR), "database/project.db"
-    )
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.dirname(BASEDIR), "database/project.db")
+    SQLALCHEMY_BINDS = {'users': f'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), "database/users.db"),
+                        'tokens': f'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), "database/tokens.db")}

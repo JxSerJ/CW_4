@@ -1,4 +1,3 @@
-import base64
 import os
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -17,7 +16,9 @@ class BaseConfig:
     TOKEN_EXPIRE_MINUTES = 15
     TOKEN_EXPIRE_DAYS = 130
 
-    PWD_HASH_SALT = base64.b64decode("salt")
+    JWT_ALGO = 'HS512'
+    PWD_HASH_ALGO = 'sha512'
+    PWD_HASH_SALT = "salt".encode('utf-8')
     PWD_HASH_ITERATIONS = 500_000
 
 

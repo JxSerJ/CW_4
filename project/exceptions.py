@@ -4,3 +4,11 @@ class BaseError(Exception):
 
 class ItemNotFound(BaseError):
     pass
+
+
+class UserNotFound(BaseError):
+    pass
+
+
+class WrongPassword(BaseError):
+    pass

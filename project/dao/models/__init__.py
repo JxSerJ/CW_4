@@ -1,7 +1,7 @@
-from .genre import Genre
-from .director import Director
-from .movie import Movie
-from .user import User
+from .genres import Genre
+from .directors import Director
+from .movies import Movie
+from .users import User
 
 __all__ = [
     "Genre",

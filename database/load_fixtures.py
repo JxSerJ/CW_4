@@ -4,7 +4,7 @@ from project.config import DevelopmentConfig
 from project.dao.models import Genre, Director, Movie
 from project.server import create_app
 from project.setup_db import db
-from project.utils import read_json
+from database.utils import read_json
 
 app = create_app(DevelopmentConfig)
 

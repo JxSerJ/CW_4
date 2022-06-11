@@ -7,12 +7,12 @@ directors_schema = DirectorSchema(many=True)
 
 
 class DirectorsService(BaseService):
-    def get_item_by_id(self, pk):
+    def get_item_by_id(self, pk) -> list:
         director = self.dao.get_by_id(pk)
         if not director:
             raise ItemNotFound
         return director_schema.dump(director)
 
-    def get_all_directors(self):
+    def get_all_directors(self) -> list:
         directors = self.dao.get_all()
         return directors_schema.dump(directors)

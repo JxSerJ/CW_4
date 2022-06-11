@@ -1,14 +1,11 @@
 from flask import current_app
 from sqlalchemy import desc
-from sqlalchemy.orm.scoping import scoped_session
 
+from project.dao.base import BaseDAO
 from project.dao.models import Movie
 
 
-class MovieDAO:
-    def __init__(self, session: scoped_session):
-        self._db_session = session
-
+class MovieDAO(BaseDAO):
     def get_by_id(self, pk) -> Movie:
         return self._db_session.query(Movie).filter(Movie.id == pk).one_or_none()
 

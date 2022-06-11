@@ -1,11 +1,11 @@
 from flask import request
 from flask_restx import abort, Namespace, Resource
 
-from project.exceptions import UserNotFound, WrongPassword
+from project.exceptions import UserNotFound, IncorrectPassword
 from project.container import user_service, auth_service
 from project.tools.security import auth_required
 
-users_ns = Namespace("users")
+users_ns = Namespace("user")
 
 
 @users_ns.route("/")
@@ -30,16 +30,19 @@ class UserView(Resource):
 
         return user_service.update(email=self, data=input_data)
 
+@users_ns.route("/password/")
+class PasswordView(Resource):
+    @users_ns.response(200, "OK")
     @auth_required
     def put(self):
         input_data = request.json
 
-        password1 = input_data.get('password1')
-        password2 = input_data.get('password2')
+        password1 = input_data.get('old_password')
+        password2 = input_data.get('new_password')
         try:
             auth_service.update_password(email=self, password1=password1, password2=password2)
             return 'Password updated', 200
         except UserNotFound:
             abort(404, message="User not found")
-        except WrongPassword:
-            abort(401, message="Wrong password")
+        except IncorrectPassword:
+            abort(401, message="Incorrect password")

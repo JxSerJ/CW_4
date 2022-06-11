@@ -10,7 +10,7 @@ class UserNotFound(BaseError):
     pass
 
 
-class WrongPassword(BaseError):
+class IncorrectPassword(BaseError):
     pass
 
 

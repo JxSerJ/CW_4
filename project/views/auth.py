@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Namespace, Resource
 
 from project.container import auth_service
-from project.exceptions import WrongPassword, UserNotFound, InvalidTokens
+from project.exceptions import IncorrectPassword, UserNotFound, InvalidTokens
 from project.schemas.auth import AuthRegisterData, AuthUserSchema, AuthLoginSchema
 
 auth_reg_data_schema = AuthRegisterData()
@@ -34,7 +34,7 @@ class AuthLoginView(Resource):
 
         try:
             return auth_service.login(password=password, email=email), 200
-        except WrongPassword:
+        except IncorrectPassword:
             return '', 401
         except UserNotFound:
             return '', 401

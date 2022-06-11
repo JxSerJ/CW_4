@@ -13,7 +13,7 @@ from project.services.base import BaseService
 from project.schemas.auth import AuthUserSchema
 
 from project.tools.security import generate_password_digest, generate_password_b64
-from project.exceptions import UserNotFound, WrongPassword, InvalidTokens
+from project.exceptions import UserNotFound, IncorrectPassword, InvalidTokens
 
 user_created_schema = AuthUserSchema()
 
@@ -72,7 +72,7 @@ class AuthService(BaseService[AuthDAO]):
         password_hash = self.__get_hash(password)
 
         if not self.__compare_password_digest(password1=password_hash, password2=user.password_hash):
-            raise WrongPassword
+            raise IncorrectPassword
 
         return self.__generate_tokens(user)
 
@@ -104,7 +104,7 @@ class AuthService(BaseService[AuthDAO]):
         old_password_hash = self.__get_hash(password1)
 
         if not self.__compare_password_digest(password1=old_password_hash, password2=user.password_hash):
-            raise WrongPassword
+            raise IncorrectPassword
 
         new_password_hash = self.__get_hash(password2)
 

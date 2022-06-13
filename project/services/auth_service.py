@@ -12,7 +12,7 @@ from project.dao.models import User
 from project.services.base import BaseService
 from project.schemas.auth import AuthUserSchema
 
-from project.tools.security import generate_password_digest, generate_password_b64
+from project.tools.security import generate_password_digest, generate_password_b64, decode_jwt
 from project.exceptions import UserNotFound, IncorrectPassword, InvalidTokens
 
 user_created_schema = AuthUserSchema()
@@ -30,16 +30,7 @@ class AuthService(BaseService[AuthDAO]):
         """Compares two passwords. Returns bool as the result"""
         return hmac.compare_digest(password1, password2)
 
-    def __decode_jwt(self, token) -> dict[str, any]:
-        """Decodes jwt and returns jwt-payload"""
-        token_data = jwt.decode(
-            jwt=token,
-            key=current_app.config['SECRET_KEY'],
-            algorithms=current_app.config['JWT_ALGO']
-        )
-        return token_data
-
-    def __generate_tokens(self, user: User)  -> dict[str, str]:
+    def __generate_tokens(self, user: User) -> dict[str, str]:
         """Generates pair of tokens"""
 
         data = {
@@ -96,12 +87,12 @@ class AuthService(BaseService[AuthDAO]):
         """Decodes access and refresh tokens. If tokens valid but expired the new pair wil be generated.
         If tokens are invalid - InvalidTokens exception will be raised"""
         try:
-            self.__decode_jwt(tokens['access_token'])
-            self.__decode_jwt(tokens['refresh_token'])
+            decode_jwt(tokens['access_token'])
+            decode_jwt(tokens['refresh_token'])
         except DecodeError:
             raise InvalidTokens
         except ExpiredSignatureError:
-            user_email = self.__decode_jwt(tokens['refresh_token'])['email']
+            user_email = decode_jwt(tokens['refresh_token'])['email']
             user = self.dao.get_user_by_email(email=user_email)
             if user is None:
                 raise UserNotFound

@@ -25,10 +25,10 @@ class UserView(Resource):
         input_data = request.json
         try:
             user_service.get_user_by_email(email=self)
+            user_service.update(email=self, data=input_data)
+            return "", 200
         except UserNotFound:
             abort(404, message="User not found")
-
-        return user_service.update(email=self, data=input_data)
 
 @users_ns.route("/password/")
 class PasswordView(Resource):

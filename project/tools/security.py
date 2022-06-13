@@ -20,6 +20,16 @@ def generate_password_b64(password_digest: bytes) -> bytes:
     return base64.b64encode(password_digest)
 
 
+def decode_jwt(token) -> dict[str, any]:
+    """Decodes jwt and returns jwt-payload"""
+    token_data = jwt.decode(
+        jwt=token,
+        key=current_app.config['SECRET_KEY'],
+        algorithms=current_app.config['JWT_ALGO']
+    )
+    return token_data
+
+
 def auth_required(func):
     def wrapper(*args, **kwargs):
         if "Authorization" not in request.headers:
@@ -28,17 +38,13 @@ def auth_required(func):
         token = request.headers["Authorization"].split("Bearer ")[-1]
 
         try:
-            token_data = jwt.decode(
-                jwt=token,
-                key=current_app.config['SECRET_KEY'],
-                algorithms=current_app.config['JWT_ALGO']
-            )
+            decode_jwt(token)
         except DecodeError:
             abort(400, message="Invalid token")
         except ExpiredSignatureError:
             abort(401, message="Signature has expired")
 
-        email = token_data['email']
+        email = decode_jwt(token)['email']
 
         return func(email, **kwargs)
 

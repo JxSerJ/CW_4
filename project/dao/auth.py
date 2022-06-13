@@ -17,11 +17,12 @@ class AuthDAO(BaseDAO):
         return new_user
 
     def get_user_by_email(self, email: str) -> User:
-        user = self._db_session.query(User).filter(User.email == email).one_or_none()
+        user: User = self._db_session.query(User).filter(User.email == email).one_or_none()
+        self._db_session.close()  # this is to ensure that session in write_tokens() can be committed as intended when token expired. Unaccounted opened sessions are bad!
         return user
 
     def update_user_password(self, email: str, new_password_hash: str):
-        user = self.get_user_by_email(email)
+        user: User = self.get_user_by_email(email)
         user.password_hash = new_password_hash
         self._db_session.add(user)
         self._db_session.commit()

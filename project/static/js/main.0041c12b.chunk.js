@@ -263,8 +263,8 @@
             }, H.put("/auth/login/", n)).then((function (e) {
                 N("AccessToken", e.data.access_token, {"max-age": 604800}), N("RefreshToken", e.data.refresh_token, {"max-age": 604800}), document.location.reload()
             })).catch((function (e) {
-                console.error("Token refresh unsuccessful", e.response), window.location = "/login"
-            }))) : (console.error("No tokens were founded", e.response), window.location = "/login")
+                console.error("Token refresh unsuccessful", e.response), window.location = "#/login"
+            }))) : (console.error("No tokens were founded", e.response), window.location = "#/login")
         }, ie = n(42), se = n.n(ie), re = function (e) {
             var t = e.options, n = e.selected, a = e.onChange;
             return Object(x.jsx)("div", {

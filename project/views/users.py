@@ -40,7 +40,7 @@ class PasswordView(Resource):
         password1 = input_data.get('old_password')
         password2 = input_data.get('new_password')
         try:
-            auth_service.update_password(email=self, password1=password1, password2=password2)
+            auth_service.update_password(email=self, old_password=password1, new_password=password2)
             return 'Password updated', 200
         except UserNotFound:
             abort(404, message="User not found")

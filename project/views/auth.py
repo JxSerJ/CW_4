@@ -47,5 +47,6 @@ class AuthLoginView(Resource):
             return auth_service.approve_tokens(input_data), 201
         except InvalidTokens:
             return '', 401
-        except ExpiredSignatureError:
-            return redirect('/')
+
+    def get(self):
+        return redirect('/login/')

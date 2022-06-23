@@ -30,6 +30,7 @@ class UserView(Resource):
         except UserNotFound:
             abort(404, message="User not found")
 
+
 @users_ns.route("/password/")
 class PasswordView(Resource):
     @users_ns.response(200, "OK")

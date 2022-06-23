@@ -19,14 +19,16 @@ user_created_schema = AuthUserSchema()
 
 
 class AuthService(BaseService[AuthDAO]):
-    def __get_hash(self, password: str) -> str:
+    @staticmethod
+    def __get_hash(password: str) -> str:
         """Generates hash and decodes it into string with UTF-8 decoded characters"""
         password_hash_digest = generate_password_digest(password)
         password_hash_b64 = generate_password_b64(password_hash_digest)
 
         return password_hash_b64.decode('utf-8')
 
-    def __compare_password_digest(self, password1, password2) -> bool:
+    @staticmethod
+    def __compare_password_digest(password1, password2) -> bool:
         """Compares two passwords. Returns bool as the result"""
         return hmac.compare_digest(password1, password2)
 

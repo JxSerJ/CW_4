@@ -9,3 +9,4 @@ PyJWT
 # For test
 pytest
 pytest-cov
+SQLAlchemy

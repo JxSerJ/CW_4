@@ -1,6 +1,5 @@
-from flask import request, redirect, url_for
+from flask import request
 from flask_restx import Namespace, Resource
-from jwt import ExpiredSignatureError
 
 from project.container import auth_service
 from project.exceptions import IncorrectPassword, UserNotFound, InvalidTokens
@@ -15,7 +14,9 @@ auth_ns = Namespace("auth")
 
 @auth_ns.route('/register/')
 class AuthRegisterView(Resource):
-    def post(self):
+
+    @staticmethod
+    def post():
         input_data = request.json
         validated_data = auth_reg_data_schema.load(input_data)
 
@@ -24,9 +25,12 @@ class AuthRegisterView(Resource):
 
         return auth_service.register(password=password, email=email), 201
 
+
 @auth_ns.route('/login/')
 class AuthLoginView(Resource):
-    def post(self):
+
+    @staticmethod
+    def post():
         input_data = request.json
         validated_data = auth_user_data_schema.load(input_data)
 
@@ -40,7 +44,8 @@ class AuthLoginView(Resource):
         except UserNotFound:
             return '', 401
 
-    def put(self):
+    @staticmethod
+    def put():
         input_data = request.json
 
         try:

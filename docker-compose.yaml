@@ -1,0 +1,77 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 80:25000
+    volumes:
+      - ./docker_config.py:/app_code/config.py
+    depends_on:
+      pg_main_db:
+        condition: service_healthy
+#      pg_users_db:
+#        condition: service_healthy
+#      pg_tokens_db:
+#        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  migrations:
+    build:
+      context: .
+    environment:
+      FLASK_APP: 'run.py'
+    volumes:
+      - ./docker_config.py:/app_code/config.py
+      - ./exchanger:/app_code/exchanger
+    depends_on:
+      pg_main_db:
+        condition: service_healthy
+#      pg_users_db:
+#        condition: service_healthy
+#      pg_tokens_db:
+#        condition: service_healthy
+    command: sh -cx "python3 -m flask db upgrade"
+
+  pg_main_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: main_db_user
+      POSTGRES_PASSWORD: main_db_pass
+      POSTGRES_DB: main_db
+    volumes:
+      - ./pg_main_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U main_db_user -d main_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+#  pg_users_db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_USER: users_db_user
+#      POSTGRES_PASSWORD: users_db_pass
+#      POSTGRES_DB: users_db
+#    volumes:
+#      - ./pg_users_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U users_db_user -d users_db" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+#
+#  pg_tokens_db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_USER: tokens_db_user
+#      POSTGRES_PASSWORD: tokens_db_pass
+#      POSTGRES_DB: tokens_db
+#    volumes:
+#      - ./pg_tokens_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U tokens_db_user -d tokens_db" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5

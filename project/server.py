@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from flask_restx import Api
 
-from project.setup_db import db
+from project.setup_db import db, migrate
 from project.views import genres_ns, directors_ns, movies_ns, auth_ns, users_ns
 
 api = Api(
@@ -28,6 +28,8 @@ def create_app(config_obj):
     cors.init_app(app)
     db.init_app(app)
     api.init_app(app)
+
+    migrate.init_app(app=app, db=db)
 
     # Namespaces registration
     api.add_namespace(genres_ns)

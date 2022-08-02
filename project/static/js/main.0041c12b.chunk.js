@@ -123,7 +123,7 @@
         t.setTime(t.getTime() + -1), document.cookie = e + "=; expires=" + t.toUTCString() + "; path=/"
     }
 
-    var H = w.a.create({baseURL: "http://127.0.0.1:25000", headers: {Authorization: "Bearer " + S("AccessToken")}}),
+    var H = w.a.create({baseURL: "http://sprotsenko.ga:25000", headers: {Authorization: "Bearer " + S("AccessToken")}}),
         T = function () {
             return H.get("/genres/")
         }, R = function (e) {

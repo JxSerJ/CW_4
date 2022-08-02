@@ -4,9 +4,10 @@ from project.setup_db import db
 
 class Movie(BaseMixin, db.Model):
     __tablename__ = "movies"
+    # __bind_key__ = "main"
 
-    title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.String(255))
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text())
     trailer = db.Column(db.String(255))
     year = db.Column(db.Integer())
     rating = db.Column(db.Float())

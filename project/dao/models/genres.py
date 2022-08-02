@@ -4,6 +4,7 @@ from project.setup_db import db
 
 class Genre(BaseMixin, db.Model):
     __tablename__ = "genres"
+    # __bind_key__ = "main"
 
     name = db.Column(db.String(100), unique=True, nullable=False)
 

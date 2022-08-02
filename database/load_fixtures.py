@@ -1,14 +1,20 @@
+import os
+import sys
+path = os.path.abspath('.')
+sys.path.insert(1, path)
+
 from sqlalchemy.exc import IntegrityError
 
-from project.config import DevelopmentConfig
+from config import DevelopmentConfig
+from database.utils import read_json
 from project.dao.models import Genre, Director, Movie
 from project.server import create_app
 from project.setup_db import db
-from database.utils import read_json
+
 
 app = create_app(DevelopmentConfig)
 
-data = read_json("fixtures.json")
+data = read_json("database/fixtures.json")
 
 with app.app_context():
     for genre in data["genres"]:

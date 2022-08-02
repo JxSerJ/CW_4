@@ -31,6 +31,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     ENV = 'development'
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.dirname(BASEDIR), "database/project.db")
-    SQLALCHEMY_BINDS = {'users': f'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), "database/users.db"),
-                        'tokens': f'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), "database/tokens.db")}
+    SQLALCHEMY_DATABASE_URI = "postgresql://main_db_user:main_db_pass@pg_main_db/main_db"
+    # SQLALCHEMY_BINDS = {'users': 'postgresql://users_db_user:users_db_pass@pg_users_db/users_db',
+    #                     'tokens': 'postgresql://tokens_db_user:tokens_db_pass@pg_tokens_db/tokens_db',
+    #                     'main': 'postgresql://main_db_user:main_db_pass@pg_main_db/main_db'}  # TODO delete this

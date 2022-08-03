@@ -12,7 +12,7 @@ services:
       migrations:
         condition: service_completed_successfully
   front:
-    image: $DOCKER_USERNAME/$FRONT_NAME:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    image: $DOCKER_USERNAME/$FRONT_NAME:latest
     ports:
       - 80:2500
     depends_on:

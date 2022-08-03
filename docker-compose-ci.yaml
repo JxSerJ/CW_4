@@ -22,7 +22,7 @@ services:
         condition: service_completed_successfully
 
   migrations:
-    image: sprotsenko/$API_NAME:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    image: $DOCKER_USERNAME/$API_NAME:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     environment:
       FLASK_APP: 'run.py'
     volumes:
